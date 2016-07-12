@@ -28,11 +28,12 @@ class OperationSystem(models.Model):
 class Instance(models.Model):
 
     name = models.CharField(max_length=256)
-    amount_of_cpu = models.PositiveSmallIntegerField(default=1)
-    amount_of_memory = models.FloatField()
-    amount_of_hd = models.FloatField()
-    provider = models.ForeignKey('Provider')
     system = models.ForeignKey('OperationSystem')
+    amount_of_cpu = models.PositiveSmallIntegerField(default=1,
+                                                     verbose_name=u'CPUs')
+    amount_of_memory = models.FloatField(verbose_name=u'Memory (GB)')
+    amount_of_hd = models.FloatField(verbose_name=u'Hd (GB)')
+    provider = models.ForeignKey('Provider')
 
     def __str__(self):
         return self.name
