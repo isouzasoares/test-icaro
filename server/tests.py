@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from models import Provider, OperationSystem
+from models import Provider, OperationSystem, Instance
 
 # Create your tests here.
 
@@ -18,3 +18,17 @@ class ServerTestCase(TestCase):
         system = OperationSystem.objects.get(name='Windows')
         self.assertEqual(provider.name, 'Amazon')
         self.assertEqual(system.name, 'Windows')
+
+    def test_add_instance_object(self):
+
+        provider = Provider.objects.get(name='Amazon')
+        system = OperationSystem.objects.get(name='Windows')
+        Instance.objects.create(name='Instance1',
+                                amount_of_cpu=2,
+                                amount_of_memory=256,
+                                amount_of_hd=30,
+                                provider=provider,
+                                system=system)
+        instance = Instance.objects.filter(provider=provider,
+                                           system=system)
+        self.assertEqual(len(instance), 1)
