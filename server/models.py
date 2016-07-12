@@ -34,6 +34,7 @@ class Instance(models.Model):
     amount_of_memory = models.FloatField(verbose_name=u'Memory (GB)')
     amount_of_hd = models.FloatField(verbose_name=u'Hd (GB)')
     provider = models.ForeignKey('Provider')
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return self.name

@@ -28,7 +28,9 @@ class ServerTestCase(TestCase):
                                 amount_of_memory=256,
                                 amount_of_hd=30,
                                 provider=provider,
+                                price=49.00,
                                 system=system)
         instance = Instance.objects.filter(provider=provider,
                                            system=system)
         self.assertEqual(len(instance), 1)
+        self.assertEqual(len(instance.filter(price__gte=40)), 1)
