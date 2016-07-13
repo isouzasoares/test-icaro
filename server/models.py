@@ -48,6 +48,7 @@ class Instance(models.Model):
     amount_of_cpu = models.PositiveSmallIntegerField(default=1,
                                                      verbose_name=u'CPUs')
     amount_of_memory = models.FloatField(verbose_name=u'Memory (GB)')
+    hd = models.ForeignKey('HardDisk')
     provider = models.ForeignKey('Provider')
     price = models.DecimalField(max_digits=10, decimal_places=2)
 

@@ -29,10 +29,12 @@ class ServerTestCase(TestCase):
 
         provider = Provider.objects.get(name='Amazon')
         system = OperationSystem.objects.get(name='Windows')
+        hd = HardDisk.objects.get(hd_type='ssd')
         Instance.objects.create(name='Instance1',
                                 amount_of_cpu=2,
                                 amount_of_memory=256,
                                 provider=provider,
+                                hd=hd,
                                 price=49.00,
                                 system=system)
         instance = Instance.objects.filter(provider=provider,
