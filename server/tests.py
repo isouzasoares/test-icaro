@@ -82,3 +82,10 @@ class ServerApiTestCase(APITestCase):
         request = self.client.get('/api/instance/list/?system=1')
         response = json.loads(request.content)
         self.assertEqual(len(response), 1)
+
+
+class ServerViewTest(TestCase):
+
+    def test_return_view(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
