@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from rest_framework.generics import ListAPIView
+from rest_framework import filters
 
 from serializers import (ProviderSerializer, SystemSerializer,
                          HardDiskSerializer, InstanceSerializer)
@@ -35,6 +36,9 @@ class HardDiskView(ListAPIView):
 class InstanceView(ListAPIView):
     model = Instance
     serializer_class = InstanceSerializer
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
+    filter_fields = ('provider', 'system', 'amount_of_cpu', 'amount_of_memory',
+                     'hd')
 
     def get_queryset(self):
         return Instance.objects.all()

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 
 from django.test import TestCase
 
@@ -45,6 +46,22 @@ class ServerTestCase(TestCase):
 
 class ServerApiTestCase(APITestCase):
 
+    def setUp(self):
+        """start test object"""
+        Provider.objects.create(name='Amazon')
+        OperationSystem.objects.create(name='Windows')
+        HardDisk.objects.create(hd_type='ssd', amount_of_hd=40.0)
+        provider = Provider.objects.get(name='Amazon')
+        system = OperationSystem.objects.get(name='Windows')
+        hd = HardDisk.objects.get(hd_type='ssd')
+        Instance.objects.create(name='Instance1',
+                                amount_of_cpu=2,
+                                amount_of_memory=256,
+                                provider=provider,
+                                hd=hd,
+                                price=49.00,
+                                system=system)
+
     def test_get_provider(self):
         request = self.client.get('/api/provider/list/')
         self.assertEqual(request.status_code, 200)
@@ -60,3 +77,8 @@ class ServerApiTestCase(APITestCase):
     def test_get_instnce(self):
         request = self.client.get('/api/instance/list/')
         self.assertEqual(request.status_code, 200)
+        response = json.loads(request.content)
+        self.assertEqual(type(response), list)
+        request = self.client.get('/api/instance/list/?system=1')
+        response = json.loads(request.content)
+        self.assertEqual(len(response), 1)
