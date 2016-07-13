@@ -50,3 +50,11 @@ class ServerApiTestCase(APITestCase):
     def test_get_system(self):
         request = self.client.get('/api/system/list/')
         self.assertEqual(request.status_code, 200)
+
+    def test_get_hd(self):
+        request = self.client.get('/api/hd/list/')
+        self.assertEqual(request.status_code, 200)
+
+    def test_get_instnce(self):
+        request = self.client.get('/api/instance/list/')
+        self.assertEqual(request.status_code, 200)
