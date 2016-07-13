@@ -2,6 +2,7 @@
 
 from django.test import TestCase
 
+from rest_framework.test import APITestCase
 from models import Provider, OperationSystem, Instance, HardDisk
 
 # Create your tests here.
@@ -38,3 +39,10 @@ class ServerTestCase(TestCase):
                                            system=system)
         self.assertEqual(len(instance), 1)
         self.assertEqual(len(instance.filter(price__gte=40)), 1)
+
+
+class ServerApiTestCase(APITestCase):
+
+    def test_get_provider(self):
+        request = self.client.get('/api/provider/list/')
+        self.assertEqual(request.status_code, 200)
