@@ -1,6 +1,22 @@
 {% extends 'server/base.html' %}
+{% block head %}
+ <script type="text/javascript">
+   mod = angular.module("servers", []);
+   mod.controller("listServer", function($scope, $http){
+      var loadInstances = function(){
+         $http.get('/api/instance/list').success(function(data){
+           console.log(data)
+           $scope.instances = data
+         });
+      }
+
+      loadInstances()
+   })
+ </script>
+{% endblock %}
 {% block content %}
-  <div class="jumbotron">
+ {% verbatim %}
+  <div class="jumbotron" ng-controller='listServer'>
       <table class="table table-striped">
          <thead class="thead-inverse">
            <tr>
@@ -15,10 +31,18 @@
            </tr>
          </thead>
          <tbody>
-           <tr>
-        
+           <tr ng-repeat="instance in instances">
+            <th scope="row">{{ instance.id }}</th>
+            <td>{{ instance.name }}</td>
+            <td>{{ instance.provider.name }}</td>
+            <td>{{ instance.system.name }}</td>
+            <td>{{ instance.amount_of_cpu }}</td>
+            <td>{{ instance.amount_of_memory }}</td>
+            <td>{{ instance.hd }}</td>
+            <td>{{ instance.price }}</td>
            </tr>
          </tbody>
     </table>
-</div>
+  </div>
+ {% endverbatim %}
 {% endblock %}
