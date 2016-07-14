@@ -3,6 +3,7 @@
  <script type="text/javascript">
    mod = angular.module("servers", []);
    mod.controller("listServer", function($scope, $http){
+      $scope.instance = {}
       $scope.loadInstances = function(){
          $http.get('/api/instance/list', {params: $scope.instance}).success(function(data){
            $scope.instances = data
@@ -23,6 +24,15 @@
       
       $scope.reset = function(){
         delete $scope.instance
+        $scope.loadInstances();
+      }
+
+      $scope.setOrder = function(){
+        if ($scope.instance.ordering == '-price'){
+          $scope.instance.ordering = 'price';
+        }else{
+          $scope.instance.ordering = '-price';
+        }
         $scope.loadInstances();
       }
 
@@ -55,8 +65,8 @@
              <option value="{{ system.id }}" ng-repeat="system in systems">{{ system.name }}</option>
           </select>
         </div>
-        <button class="btn btn-primary" ng-click="loadInstances()">Search</button>
-        <button class="btn btn-primary" ng-click="reset()">Reset</button>
+        <button class="btn btn-primary" ng-click="loadInstances()" ng-disabled="!instance">Search</button>
+        <button class="btn btn-primary" ng-click="reset()" ng-disabled="!instance">Reset</button>
       </form>
       </div>
       <table class="table table-striped">
@@ -69,7 +79,7 @@
              <th>CPU</th>
              <th>Memory (GB)</th>
              <th>HD (GB)</th>
-             <th>Price</th>
+             <th><button class="btn btn-primary" ng-click="setOrder()">Price</button></th>
            </tr>
          </thead>
          <tbody>
