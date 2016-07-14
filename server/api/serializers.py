@@ -28,6 +28,7 @@ class HardDiskSerializer(serializers.ModelSerializer):
 class InstanceSerializer(serializers.ModelSerializer):
     provider = ProviderSerializer()
     system = SystemSerializer()
+    hd = HardDiskSerializer()
 
     class Meta:
         model = Instance

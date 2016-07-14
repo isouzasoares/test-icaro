@@ -3,20 +3,62 @@
  <script type="text/javascript">
    mod = angular.module("servers", []);
    mod.controller("listServer", function($scope, $http){
-      var loadInstances = function(){
-         $http.get('/api/instance/list').success(function(data){
-           console.log(data)
+      $scope.loadInstances = function(){
+         $http.get('/api/instance/list', {params: $scope.instance}).success(function(data){
            $scope.instances = data
          });
       }
 
-      loadInstances()
+      var loadSystem = function(){
+         $http.get('/api/system/list').success(function(data){
+           $scope.systems = data
+         });
+      }
+
+      var loadHd = function(){
+         $http.get('/api/hd/list').success(function(data){
+           $scope.hard_disks = data
+         });
+      }
+      
+      $scope.reset = function(){
+        delete $scope.instance
+        $scope.loadInstances();
+      }
+
+      $scope.loadInstances();
+      loadHd();
+      loadSystem();
    })
  </script>
 {% endblock %}
 {% block content %}
  {% verbatim %}
   <div class="jumbotron" ng-controller='listServer'>
+     <div class="row">
+      <form class="form-inline">
+        <div class="form-group">
+          <input type="text" class="form-control" name="amount_of_cpu" placeholder="CPU (Nº)" ng-model="instance.amount_of_cpu">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="amount_of_memory" placeholder="Memory (GB)" ng-model="instance.amount_of_memory">
+        </div>
+        <div class="form-group">
+          <select class="c-select" name="hd" ng-model="instance.hd">
+             <option selected value="">Hard disk (GB)</option>
+             <option value="{{ hd.id }}" ng-repeat="hd in hard_disks">{{hd.amount_of_hd}} {{ hd.hd_type }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select class="c-select" name="system" ng-model="instance.system">
+             <option selected value="">System Operation</option>
+             <option value="{{ system.id }}" ng-repeat="system in systems">{{ system.name }}</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" ng-click="loadInstances()">Search</button>
+        <button class="btn btn-primary" ng-click="reset()">Reset</button>
+      </form>
+      </div>
       <table class="table table-striped">
          <thead class="thead-inverse">
            <tr>
@@ -25,8 +67,8 @@
              <th>Provider</th>
              <th>System</th>
              <th>CPU</th>
-             <th>Memory</th>
-             <th>HD</th>
+             <th>Memory (GB)</th>
+             <th>HD (GB)</th>
              <th>Price</th>
            </tr>
          </thead>
@@ -38,7 +80,7 @@
             <td>{{ instance.system.name }}</td>
             <td>{{ instance.amount_of_cpu }}</td>
             <td>{{ instance.amount_of_memory }}</td>
-            <td>{{ instance.hd }}</td>
+            <td>{{ instance.hd.amount_of_hd }} {{ instance.hd.hd_type }}</td>
             <td>{{ instance.price }}</td>
            </tr>
          </tbody>
