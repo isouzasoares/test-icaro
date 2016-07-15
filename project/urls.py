@@ -21,7 +21,7 @@ from django.contrib import admin
 from server.views import IndexView
 
 urlpatterns = [
+    url(r'^$', IndexView.as_view(), name="index"),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('server.api.urls', namespace="api")),
-    url(r'^', IndexView.as_view(), name="index"),
 ]
