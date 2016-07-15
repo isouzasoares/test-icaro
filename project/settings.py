@@ -27,7 +27,7 @@ SECRET_KEY = 'c$2(--1@)%%byylce%r8ljellkx$c=&mmhlu8uke$@xb!x#)wa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.ec2-52-67-72-227.sa-east-1.compute.amazonaws.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -131,3 +131,8 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = '/home/ubuntu/www/media/'
 
 STATIC_ROOT = '/home/ubuntu/www/static/'
+
+try:
+    from local_settings import *
+except:
+    pass
