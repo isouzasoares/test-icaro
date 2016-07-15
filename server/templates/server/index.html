@@ -23,7 +23,7 @@
       }
       
       $scope.reset = function(){
-        delete $scope.instance
+        $scope.instance = {}
         $scope.loadInstances();
       }
 
@@ -34,6 +34,10 @@
           $scope.instance.ordering = '-price';
         }
         $scope.loadInstances();
+      }
+
+      $scope.getInstanceLength = function(instance){
+        return Object.keys(instance).length
       }
 
       $scope.loadInstances();
@@ -65,8 +69,8 @@
              <option value="{{ system.id }}" ng-repeat="system in systems">{{ system.name }}</option>
           </select>
         </div>
-        <button class="btn btn-primary" ng-click="loadInstances()" ng-disabled="!instance">Filter</button>
-        <button class="btn btn-primary" ng-click="reset()" ng-disabled="!instance">Reset</button>
+        <button class="btn btn-primary" ng-click="loadInstances()" ng-disabled="!getInstanceLength(instance)">Filter</button>
+        <button class="btn btn-primary" ng-click="reset()" ng-disabled="!getInstanceLength(instance)">Reset</button>
       </form>
       </div>
       <table class="table table-striped">
