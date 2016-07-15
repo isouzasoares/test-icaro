@@ -1,7 +1,7 @@
 {% extends 'server/base.html' %}
 {% block head %}
  <script type="text/javascript">
-   mod = angular.module("servers", []);
+   mod = angular.module("servers", ['ngMask']);
    mod.controller("listServer", function($scope, $http){
       $scope.instance = {}
       $scope.loadInstances = function(){
@@ -48,7 +48,7 @@
      <div class="row">
       <form class="form-inline">
         <div class="form-group">
-          <input type="text" class="form-control" name="amount_of_cpu" placeholder="CPU (Nº)" ng-model="instance.amount_of_cpu">
+          <input type="text" class="form-control" name="amount_of_cpu" placeholder="CPU (Nº)" ng-model="instance.amount_of_cpu" mask="9" repeat="4">
         </div>
         <div class="form-group">
           <input type="text" class="form-control" name="amount_of_memory" placeholder="Memory (GB)" ng-model="instance.amount_of_memory">
@@ -95,6 +95,9 @@
            </tr>
          </tbody>
     </table>
+    <div class="row" ng-show="!instances.length"> 
+      <div class="col-md-3 col-md-offset-5"><h6>No results</h6></div>
+    </div>
   </div>
  {% endverbatim %}
 {% endblock %}
