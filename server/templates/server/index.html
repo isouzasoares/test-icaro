@@ -37,7 +37,10 @@
       }
 
       $scope.getInstanceLength = function(instance){
-        return Object.keys(instance).length
+        if (instance.amount_of_cpu || instance.amount_of_memory || instance.hd || instance.system){
+          return true
+        }
+        return false
       }
 
       $scope.loadInstances();
