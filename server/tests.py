@@ -75,6 +75,19 @@ class ServerApiTestCase(APITestCase):
         self.assertEqual(request.status_code, 200)
 
     def test_get_instnce(self):
+        Provider.objects.create(name='Digital Ocean')
+        OperationSystem.objects.create(name='Ubuntu')
+        HardDisk.objects.create(hd_type='hdd', amount_of_hd=100.0)
+        provider = Provider.objects.get(name='Digital Ocean')
+        system = OperationSystem.objects.get(name='Ubuntu')
+        hd = HardDisk.objects.get(hd_type='hdd')
+        Instance.objects.create(name='Instance test',
+                                amount_of_cpu=5,
+                                amount_of_memory=16,
+                                provider=provider,
+                                hd=hd,
+                                price=180.00,
+                                system=system)
         request = self.client.get('/api/instance/list/')
         self.assertEqual(request.status_code, 200)
         response = json.loads(request.content)
@@ -82,6 +95,10 @@ class ServerApiTestCase(APITestCase):
         request = self.client.get('/api/instance/list/?system=1')
         response = json.loads(request.content)
         self.assertEqual(len(response), 1)
+        request = self.client.get('/api/instance/list/?amount_of_cpu=5')
+        response = json.loads(request.content)
+        self.assertEqual(len(response), 1)
+        self.assertEqual(response[0]['price'], '180.00')
 
 
 class ServerViewTest(TestCase):
